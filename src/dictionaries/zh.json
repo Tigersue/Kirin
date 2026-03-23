@@ -1,0 +1,51 @@
+{
+  "common": {
+    "dashboard": "仪表盘",
+    "campaigns": "活动",
+    "influencers": "达人",
+    "settings": "设置",
+    "logout": "退出登录",
+    "login": "登录",
+    "register": "注册",
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "upload": "上传",
+    "success": "成功",
+    "error": "错误"
+  },
+  "dashboard": {
+    "merchant": {
+      "title": "商户仪表盘",
+      "subtitle": "管理您的业务",
+      "activeCampaigns": "活跃活动",
+      "receivedApplications": "收到申请",
+      "walletBalance": "钱包余额",
+      "totalBudget": "总预算支出",
+      "recharge": "充值测试金",
+      "newCampaign": "发布新活动",
+      "recentCampaigns": "近期活动"
+    },
+    "influencer": {
+      "title": "达人工作台",
+      "subtitle": "管理您的合作",
+      "totalEarnings": "累计收益",
+      "myApplications": "我的申请",
+      "findOpportunities": "探索新机会"
+    }
+  },
+  "campaign": {
+    "status": {
+      "open": "招募中",
+      "inProgress": "进行中",
+      "completed": "已结案",
+      "cancelled": "已取消"
+    },
+    "payment": {
+      "unpaid": "未支付",
+      "escrow": "资金托管中",
+      "paid": "已结算"
+    }
+  }
+}

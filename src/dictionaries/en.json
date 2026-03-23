@@ -1,0 +1,51 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "influencers": "Influencers",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "upload": "Upload",
+    "success": "Success",
+    "error": "Error"
+  },
+  "dashboard": {
+    "merchant": {
+      "title": "Merchant Dashboard",
+      "subtitle": "Manage your business",
+      "activeCampaigns": "Active Campaigns",
+      "receivedApplications": "Received Applications",
+      "walletBalance": "Wallet Balance",
+      "totalBudget": "Total Budget",
+      "recharge": "Recharge Mock Funds",
+      "newCampaign": "New Campaign",
+      "recentCampaigns": "Recent Campaigns"
+    },
+    "influencer": {
+      "title": "Influencer Dashboard",
+      "subtitle": "Manage your collaborations",
+      "totalEarnings": "Total Earnings",
+      "myApplications": "My Applications",
+      "findOpportunities": "Find Opportunities"
+    }
+  },
+  "campaign": {
+    "status": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "payment": {
+      "unpaid": "Unpaid",
+      "escrow": "In Escrow",
+      "paid": "Paid"
+    }
+  }
+}

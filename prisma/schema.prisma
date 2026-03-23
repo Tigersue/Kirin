@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum Role {
+  MERCHANT
+  INFLUENCER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String?
+  role          Role      @default(MERCHANT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  merchantProfile  MerchantProfile?
+  influencerProfile InfluencerProfile?
+  notifications     Notification[]
+}
+
+model MerchantProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  brandName   String
+  industry    String?
+  website     String?
+  description String?
+  avatar      String?  // 品牌Logo/头像
+  balance     Float    @default(0) // 账户余额 (模拟)
+  campaigns   Campaign[]
+}
+
+model InfluencerProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  bio         String?
+  avatar      String?  // 达人头像
+  tags        String? // 擅长领域, JSON string
+  platforms   String? // 活跃平台, JSON string
+  followerCount Int    @default(0)
+  rating      Float    @default(5.0)
+  balance     Float    @default(0) // 累计收益 (模拟)
+  applications Application[]
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    MerchantProfile @relation(fields: [merchantId], references: [id])
+  title       String
+  description String
+  platform    String   // 目标平台: 抖音, 小红书, etc.
+  budget      Float
+  status      String   @default("OPEN") // OPEN, IN_PROGRESS, COMPLETED, CANCELLED
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  applications Application[]
+}
+
+model Application {
+  id            String   @id @default(cuid())
+  campaignId    String
+  campaign      Campaign @relation(fields: [campaignId], references: [id])
+  influencerId  String
+  influencer    InfluencerProfile @relation(fields: [influencerId], references: [id])
+  status        String   @default("PENDING") // PENDING, ACCEPTED, REJECTED, COMPLETED
+  paymentStatus String   @default("UNPAID")  // UNPAID, ESCROW, PAID
+  submissionUrl String?  // 达人提交的作品链接
+  submissionScreenshot String? // 作品截图
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  performance   PerformanceData?
+}
+
+model PerformanceData {
+  id            String   @id @default(cuid())
+  applicationId String   @unique
+  application   Application @relation(fields: [applicationId], references: [id])
+  clicks        Int      @default(0)
+  conversions   Int      @default(0)
+  gmv           Float    @default(0)
+  updatedAt     DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  type      String   // INFO, SUCCESS, WARNING, ALERT
+  isRead    Boolean  @default(false)
+  link      String?  // 可选的跳转链接
+  createdAt DateTime @default(now())
+}
