@@ -1,0 +1,111 @@
+// Prisma schema for production (Supabase Postgres)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  MERCHANT
+  INFLUENCER
+  ADMIN
+}
+
+model User {
+  id               String       @id @default(cuid())
+  email            String       @unique
+  password         String
+  name             String?
+  role             Role         @default(MERCHANT)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  merchantProfile   MerchantProfile?
+  influencerProfile InfluencerProfile?
+  notifications     Notification[]
+}
+
+model MerchantProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  brandName   String
+  industry    String?
+  website     String?
+  description String?
+  avatar      String?
+  balance     Float    @default(0)
+  campaigns   Campaign[]
+}
+
+model InfluencerProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  bio           String?
+  avatar        String?
+  tags          String?
+  platforms     String?
+  followerCount Int      @default(0)
+  rating        Float    @default(5.0)
+  balance       Float    @default(0)
+  applications  Application[]
+}
+
+model Campaign {
+  id           String          @id @default(cuid())
+  merchantId   String
+  merchant     MerchantProfile @relation(fields: [merchantId], references: [id])
+  title        String
+  description  String
+  platform     String
+  budget       Float
+  status       String          @default("OPEN")
+  deadline     DateTime
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  applications Application[]
+}
+
+model Application {
+  id                  String           @id @default(cuid())
+  campaignId           String
+  campaign             Campaign         @relation(fields: [campaignId], references: [id])
+  influencerId         String
+  influencer           InfluencerProfile @relation(fields: [influencerId], references: [id])
+  status               String           @default("PENDING")
+  paymentStatus        String           @default("UNPAID")
+  submissionUrl        String?
+  submissionScreenshot String?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  performance          PerformanceData?
+}
+
+model PerformanceData {
+  id            String      @id @default(cuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id])
+  clicks        Int         @default(0)
+  conversions   Int         @default(0)
+  gmv           Float       @default(0)
+  updatedAt     DateTime    @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  type      String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}
+
